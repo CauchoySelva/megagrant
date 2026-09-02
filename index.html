@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0D0804">
+<meta name="description" content="Wa'uro — an archive of objects from the Vaupés. Build, online archive and more.">
+<title>Wa'uro — Links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     Mismo sistema visual del archivo — :root idéntico
+     ============================================================ */
+  :root{
+    --bg:        #0D0804;
+    --bg-2:      #15100A;
+    --panel:     #1C120A;
+    --line:      #4A3528;
+    --line-soft: #33241A;
+    --cream:     #E8DCC8;
+    --muted:     #B8A890;
+    --faint:     #8A7A64;
+    --oliva:     #C17A4A;
+    --terra:     #C17A4A;
+    --terra-hi:  #D4945E;
+    --dorado:    #D4A843;
+    --dorado-hi: #E5C05C;
+    --display:   'Cormorant Garamond', serif;
+    --body:      'Crimson Text', serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    background: radial-gradient(ellipse 90% 90% at 50% 40%, var(--bg-2) 0%, var(--bg) 72%);
+    color:var(--cream);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  button{ font-family:inherit; cursor:pointer; background:none; border:none; color:inherit; }
+  button:focus-visible, a:focus-visible{ outline:2px solid var(--dorado); outline-offset:3px; }
+  *{ scrollbar-width:thin; scrollbar-color:var(--line) var(--bg); }
+  ::-webkit-scrollbar{ width:10px; height:10px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; border:2px solid var(--bg); }
+  ::-webkit-scrollbar-thumb:hover{ background:var(--oliva); }
+
+  /* ---------- atmósfera (idéntica al archivo) ---------- */
+  .fogv{ position:fixed; z-index:19; pointer-events:none; width:140vw; height:90vh; left:-20vw; opacity:.5; mix-blend-mode:screen; will-change:transform; }
+  .fogv.a{ top:8vh;  background:radial-gradient(ellipse 46% 38% at 32% 50%, rgba(150,98,52,.10), transparent 70%); animation:fogA 75s ease-in-out infinite alternate; }
+  .fogv.b{ top:42vh; background:radial-gradient(ellipse 42% 34% at 68% 50%, rgba(110,84,46,.09), transparent 70%); animation:fogB 95s ease-in-out infinite alternate; }
+  @keyframes fogA{ from{transform:translateX(-6vw)} to{transform:translateX(9vw)} }
+  @keyframes fogB{ from{transform:translateX(7vw)}  to{transform:translateX(-8vw)} }
+  #embers{ position:fixed; inset:0; z-index:20; pointer-events:none; }
+  #petro{
+    position:fixed; inset:0; z-index:21; pointer-events:none; opacity:0;
+    background-image:url('https://images.squarespace-cdn.com/content/67a29672e45a656b8be53344/51a4102d-9cbe-486f-bf6a-0589e4f46855/Petroglifos2.png?content-type=image%2Fpng');
+    background-size:720px; background-repeat:repeat;
+    filter:sepia(1) saturate(3.4) hue-rotate(-28deg) brightness(1.05); mix-blend-mode:screen;
+  }
+  .grain{
+    position:fixed; inset:0; z-index:60; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
+  }
+  @media (prefers-reduced-motion:reduce){ .fogv{ animation:none; } }
+
+  /* ---------- conmutador de idioma (mismo del archivo) ---------- */
+  .lang-toggle{
+    display:flex; gap:2px; border:1px solid var(--line);
+    position:fixed; top:14px; right:16px; z-index:62;
+    background:rgba(13,8,4,.8);
+  }
+  .lang-toggle button{
+    padding:7px 13px; font-size:12px; letter-spacing:.14em; color:var(--muted);
+    transition:color .2s, background .2s;
+  }
+  .lang-toggle button[aria-pressed="true"]{ background:var(--line); color:var(--cream); }
+
+  /* ---------- columna central ---------- */
+  main{
+    position:relative; z-index:6;
+    min-height:100%;
+    display:flex; flex-direction:column; align-items:center;
+    padding:0 26px calc(28px + env(safe-area-inset-bottom));
+    max-width:960px; margin:0 auto;
+  }
+
+  .stage{
+    position:relative; width:100%; max-width:560px;
+    height:min(46vh, 440px);
+    margin-bottom:4px;
+  }
+  #tucuCv{ width:100%; height:100%; display:block; }
+  .stage-msg{
+    position:absolute; left:0; right:0; bottom:10px; text-align:center;
+    font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--faint);
+    pointer-events:none; transition:opacity .6s ease;
+  }
+  .stage-msg.gone{ opacity:0; }
+
+  header{ text-align:center; margin-bottom:30px; }
+  h1{
+    font-family:var(--display); font-weight:600;
+    font-size:clamp(44px, 9vw, 64px); line-height:1.0;
+    color:var(--cream);
+  }
+  .lede{ margin-top:10px; font-size:16px; line-height:1.6; color:var(--muted); }
+
+  /* ---------- enlaces en fila: el arco que recorre la mirada ---------- */
+  nav.enlaces{
+    width:100%;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
+  }
+  .camino{
+    display:flex; flex-direction:column; gap:6px;
+    text-align:left; text-decoration:none;
+    padding:15px 17px; border-radius:9px;
+    border:1px solid rgba(193,122,74,.3);
+    background:linear-gradient(160deg, rgba(46,29,20,.85), rgba(28,16,10,.8));
+    color:var(--muted);
+    transition:border-color .25s, transform .25s;
+  }
+  .cam-tag{
+    align-self:flex-start; font-size:9.5px; letter-spacing:.2em; text-transform:uppercase;
+    padding:3px 8px; border-radius:20px; border:1px solid;
+  }
+  .camino strong{
+    font-family:var(--display); font-size:20px; font-weight:600;
+    color:var(--cream); line-height:1.08;
+  }
+  .camino span.desc{ font-size:14.5px; line-height:1.5; }
+  .camino:hover{ transform:translateY(-3px); color:var(--cream); }
+
+  .camino[data-tono="dorado"] .cam-tag{ color:var(--dorado-hi); border-color:rgba(212,168,67,.5); }
+  .camino[data-tono="dorado"]:hover{ border-color:var(--dorado); }
+  .camino[data-tono="terra"] .cam-tag{ color:var(--terra-hi); border-color:rgba(193,122,74,.55); }
+  .camino[data-tono="terra"]:hover{ border-color:var(--terra); }
+
+  .camino.pronto{ opacity:.55; pointer-events:none; }
+  .camino.pronto .cam-tag{ color:var(--faint); border-color:var(--line); }
+
+  /* ---------- logos institucionales ---------- */
+  .logos{
+    position:fixed; right:18px; bottom:14px; z-index:62;
+    display:flex; align-items:center; gap:20px;
+  }
+  .logos a{ display:block; }
+  .logos img{
+    height:24px; width:auto; display:block;
+    opacity:.6; transition:opacity .25s;
+    /* fuentes mixtas (SVG a color, PNG) unificadas en un solo tono claro
+       sobre el fondo oscuro; quitar esta linea para verlos a color */
+    filter:brightness(0) invert(.88) sepia(.14);
+  }
+  .logos a:hover img{ opacity:.95; }
+  @media (max-width:720px){
+    .logos{
+      position:static; justify-content:center;
+      margin-top:26px; gap:24px;
+    }
+  }
+
+  footer{
+    margin-top:34px; text-align:center;
+    font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--faint);
+  }
+
+  @media (max-width:720px){
+    nav.enlaces{ grid-template-columns:1fr; max-width:440px; }
+  }
+  @media (max-height:640px){ .stage{ height:38vh; } header{ margin-bottom:20px; } }
+</style>
+</head>
+<body>
+
+<div class="fogv a"></div>
+<div class="fogv b"></div>
+<canvas id="embers"></canvas>
+<div id="petro"></div>
+<div class="grain"></div>
+
+<div class="lang-toggle" role="group" aria-label="Language">
+  <button data-lang="es" aria-pressed="false">ES</button>
+  <button data-lang="en" aria-pressed="true">EN</button>
+  <button data-lang="ptbr" aria-pressed="false">PT</button>
+</div>
+
+<main>
+  <div class="stage">
+    <canvas id="tucuCv" aria-hidden="true"></canvas>
+    <div class="stage-msg" id="stageMsg"></div>
+  </div>
+
+  <header>
+    <h1>Wa&#8217;uro</h1>
+    <p class="lede" id="lede"></p>
+  </header>
+
+  <nav class="enlaces" id="enlaces" aria-label="Links"></nav>
+
+  <footer>Universidad de los Andes &times; Estudio La Selva &middot; Bogot&aacute;</footer>
+
+  <div class="logos" id="logos" aria-label="Partners"></div>
+</main>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script>
+/* ================================================================
+   CONFIGURACIÓN — lo único que hay que editar
+   ================================================================ */
+const URLS = [
+  'https://drive.google.com/drive/folders/1np-Br8HBmtb6mBtkAEpwHsXv6H9UVq6b?usp=drive_link',
+  'https://biblioteca-vert-mu.vercel.app',
+  ''   /* EDITAR cuando exista: Drive, YouTube, etc. Vacío = "pronto" */
+];
+
+const TUCU_URL = 'https://cauchoyselva.github.io/wauro-assets/models/SK_Tucu.glb';
+
+/* Si Tucu mira al lado contrario del cursor, cambiar el signo (1 ↔ -1) */
+const MIRA_X = 1;   /* horizontal (girar la cabeza)  */
+const MIRA_Y = 1;   /* vertical   (asentir)          */
+
+/* logos de la esquina — subir los archivos a media/ del repo wauro-assets
+   (versiones monocromas claras). Si el archivo no existe aun, el logo
+   simplemente no se muestra. El de Epic MegaGrants se agrega SOLO al
+   recibir el grant (badge de uso restringido): descomentar esa linea. */
+const LOGOS = [
+  { src:'https://upload.wikimedia.org/wikipedia/commons/4/47/University_of_Los_Andes_logo.svg',
+    alt:'Universidad de los Andes', href:'https://www.uniandes.edu.co/es/la-universidad' },
+  { src:'https://images.squarespace-cdn.com/content/67a29672e45a656b8be53344/e752eb5c-38f0-486d-b74b-7c8f05d643c3/Icon.png?content-type=image%2Fpng',
+    alt:'Estudio La Selva', href:'https://www.estudiolaselva.com/' }
+  /* Epic MegaGrants: agregar SOLO al recibir el grant (badge restringido)
+  ,{ src:'…/media/logo_megagrants.png', alt:'Epic MegaGrants Recipient', href:'' } */
+];
+
+/* encuadre de Tucu segun el ancho (mismo corte de 720px que las tarjetas):
+   fracciones de la altura del modelo — ojo (altura de camara), mira
+   (punto que centra), dist (distancia de camara) */
+const ENCUADRE = {
+  busto:   { ojo:0.93, mira:0.91, dist:0.45 },   /* desktop: de hombros hacia arriba */
+  retrato: { ojo:0.82, mira:0.66, dist:1.15 }    /* movil apilado: cintura hacia arriba */
+};
+
+/* textos por idioma — mismos códigos del archivo: es / en / ptbr */
+const T = {
+  en: {
+    lede: 'A playable archive.',
+    soon: 'Soon',
+    waking: 'waking Tucu',
+    overslept: 'Tucu overslept \u2014 the links work anyway',
+    enlaces: [
+      { tag:'Unreal \u00b7 Drive', tono:'dorado', titulo:'Download the build',
+        desc:'The playable version of the archive, for Windows.' },
+      { tag:'Web \u00b7 3D', tono:'terra', titulo:'Browse the archive online',
+        desc:'The published objects, in your browser.' },
+      { tag:'Soon', tono:'terra', titulo:'Extra content',
+        desc:'Additional material from the project.' }
+    ]
+  },
+  es: {
+    lede: 'Un archivo jugable.',
+    soon: 'Pronto',
+    waking: 'despertando a Tucu',
+    overslept: 'Tucu no despert\u00f3 \u2014 los enlaces funcionan igual',
+    enlaces: [
+      { tag:'Unreal \u00b7 Drive', tono:'dorado', titulo:'Descargar el build',
+        desc:'La versi\u00f3n jugable del archivo, para Windows.' },
+      { tag:'Web \u00b7 3D', tono:'terra', titulo:'Recorrer el archivo en l\u00ednea',
+        desc:'Los objetos publicados, en el navegador.' },
+      { tag:'Pronto', tono:'terra', titulo:'Contenido extra',
+        desc:'Material adicional del proyecto.' }
+    ]
+  },
+  ptbr: {
+    lede: 'Um arquivo jog\u00e1vel.',
+    soon: 'Em breve',
+    waking: 'acordando o Tucu',
+    overslept: 'Tucu n\u00e3o acordou \u2014 os links funcionam mesmo assim',
+    enlaces: [
+      { tag:'Unreal \u00b7 Drive', tono:'dorado', titulo:'Baixar a build',
+        desc:'A vers\u00e3o jog\u00e1vel do arquivo, para Windows.' },
+      { tag:'Web \u00b7 3D', tono:'terra', titulo:'Percorrer o arquivo on-line',
+        desc:'Os objetos publicados, no navegador.' },
+      { tag:'Em breve', tono:'terra', titulo:'Conte\u00fado extra',
+        desc:'Material adicional do projeto.' }
+    ]
+  }
+};
+
+/* ================================================================ */
+const reducedMotion = matchMedia('(prefers-reduced-motion:reduce)').matches;
+let LANG = 'en';                 /* MegaGrant: inglés por defecto */
+let modeloListo = false;
+
+function aplicarIdioma(l){
+  LANG = l;
+  document.documentElement.lang = (l === 'ptbr') ? 'pt-BR' : l;
+  const t = T[l];
+  document.getElementById('lede').textContent = t.lede;
+  if (!modeloListo) document.getElementById('stageMsg').textContent = t.waking;
+
+  const nav = document.getElementById('enlaces');
+  nav.innerHTML = '';
+  t.enlaces.forEach((e, i) => {
+    const url = URLS[i];
+    const a = document.createElement('a');
+    a.className = 'camino' + (url ? '' : ' pronto');
+    a.dataset.tono = e.tono;
+    if (url){ a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
+    else { a.setAttribute('aria-disabled','true'); }
+    const tag = document.createElement('span'); tag.className = 'cam-tag';
+    tag.textContent = url ? e.tag : t.soon;
+    const st = document.createElement('strong'); st.textContent = e.titulo;
+    const de = document.createElement('span'); de.className = 'desc'; de.textContent = e.desc;
+    a.append(tag, st, de);
+    nav.appendChild(a);
+  });
+
+  document.querySelectorAll('.lang-toggle button')
+    .forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+}
+document.querySelectorAll('.lang-toggle button')
+  .forEach(b => b.addEventListener('click', () => aplicarIdioma(b.dataset.lang)));
+aplicarIdioma(LANG);
+
+/* ---------- logos ---------- */
+(function renderLogos(){
+  const cont = document.getElementById('logos');
+  for (const l of LOGOS){
+    if (!l.src) continue;
+    const img = document.createElement('img');
+    img.src = l.src; img.alt = l.alt; img.loading = 'lazy';
+    const nodo = l.href ? document.createElement('a') : img;
+    if (l.href){ nodo.href = l.href; nodo.target = '_blank'; nodo.rel = 'noopener'; nodo.appendChild(img); }
+    /* si el archivo no existe (aun), el logo desaparece sin dejar rastro */
+    img.onerror = () => nodo.remove();
+    cont.appendChild(nodo);
+  }
+})();
+
+/* ---------- brasas (del archivo) ---------- */
+(function initEmbers(){
+  const cv = document.getElementById('embers');
+  const ctx = cv.getContext('2d');
+  const P = [];
+  function size(){ cv.width = innerWidth; cv.height = innerHeight; }
+  size(); addEventListener('resize', size);
+  const COUNT = reducedMotion ? 0 : (innerWidth < 700 ? 18 : 40);
+  for (let i=0;i<COUNT;i++){
+    P.push({
+      x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+      r:0.7+Math.random()*1.8, s:0.1+Math.random()*0.34,
+      drift:(Math.random()-0.5)*0.17, ph:Math.random()*Math.PI*2,
+      gold:Math.random()<0.35
+    });
+  }
+  if (COUNT>0)(function tick(t){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    for (const p of P){
+      p.y -= p.s; p.x += p.drift + Math.sin(t*0.0005 + p.ph)*0.12;
+      if (p.y < -8){ p.y = cv.height + 8; p.x = Math.random()*cv.width; }
+      const a = 0.22 + 0.26*Math.abs(Math.sin(t*0.001 + p.ph));
+      ctx.beginPath();
+      ctx.fillStyle = p.gold ? 'rgba(220,176,80,'+a+')' : 'rgba(200,126,76,'+a+')';
+      ctx.shadowBlur = 5;
+      ctx.shadowColor = p.gold ? 'rgba(212,168,67,0.6)' : 'rgba(193,122,74,0.5)';
+      ctx.arc(p.x, p.y, p.r, 0, 7);
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+    requestAnimationFrame(tick);
+  })(0);
+})();
+
+/* ---------- petroglifos bajo el cursor (del archivo) ---------- */
+(function initPetroCursor(){
+  const petro = document.getElementById('petro');
+  if (reducedMotion || !matchMedia('(pointer:fine)').matches) return;
+  const R = 150;
+  let mtx=-3000, mty=-3000, mpx=-3000, mpy=-3000, intensity=0, lx=null, ly=null;
+  addEventListener('mousemove', (e) => {
+    mtx=e.clientX; mty=e.clientY;
+    if (lx!==null){ intensity = Math.min(1, intensity + Math.hypot(e.clientX-lx, e.clientY-ly)*0.011); }
+    lx=e.clientX; ly=e.clientY;
+  });
+  (function ptick(){
+    mpx += (mtx-mpx)*0.15; mpy += (mty-mpy)*0.15; intensity *= 0.955;
+    const m = 'radial-gradient(circle '+R+'px at '+mpx.toFixed(0)+'px '+mpy.toFixed(0)+'px, #000 0%, #000 28%, transparent 72%)';
+    petro.style.webkitMaskImage = m; petro.style.maskImage = m;
+    petro.style.opacity = (0.24*intensity).toFixed(3);
+    requestAnimationFrame(ptick);
+  })();
+})();
+</script>
+
+<script type="module">
+/* ================================================================
+   TUCU — anfitrión de la página. Reproduce su Idle y, ENCIMA de
+   cada cuadro del mixer, gira Head/Neck/Spine2 hacia el cursor.
+   Sin cursor fino (móvil): mirada autónoma + sigue el toque.
+   ================================================================ */
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const cv  = document.getElementById('tucuCv');
+const msg = document.getElementById('stageMsg');
+const reduced = matchMedia('(prefers-reduced-motion:reduce)').matches;
+const finePointer = matchMedia('(pointer:fine)').matches;
+
+const renderer = new THREE.WebGLRenderer({ canvas:cv, antialias:true, alpha:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(34, 1, 0.05, 60);
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const key = new THREE.DirectionalLight(0xffe2bc, 1.2);
+key.position.set(2.5, 3, 2);
+scene.add(key);
+const rim = new THREE.PointLight(0xD4A843, 0.5, 12);
+rim.position.set(-2.5, 1.2, -2);
+scene.add(rim);
+
+function size(){
+  const r = cv.parentElement.getBoundingClientRect();
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / r.height;
+  camera.updateProjectionMatrix();
+}
+size();
+new ResizeObserver(() => { size(); if (encuadrar) encuadrar(); }).observe(cv.parentElement);
+
+/* ---------- carga ---------- */
+const loader = new GLTFLoader();
+let mixer = null, bones = null, encuadrar = null;
+
+loader.load(TUCU_URL, (gltf) => {
+  const model = gltf.scene;
+  scene.add(model);
+
+  /* encuadre calculado del bounding box real del modelo, con dos
+     composiciones segun el ancho (ver ENCUADRE en la configuracion) */
+  const box = new THREE.Box3().setFromObject(model);
+  const h = box.max.y - box.min.y;
+  const cx = (box.min.x + box.max.x) / 2;
+  const cz = (box.min.z + box.max.z) / 2;
+  encuadrar = () => {
+    const e = (innerWidth > 720) ? ENCUADRE.busto : ENCUADRE.retrato;
+    camera.position.set(cx, box.min.y + h * e.ojo, cz + h * e.dist);
+    camera.lookAt(cx, box.min.y + h * e.mira, cz);
+  };
+  encuadrar();
+
+  /* huesos verificados en SK_Tucu.glb */
+  bones = {
+    head:  model.getObjectByName('mixamorigHead')   || model.getObjectByName('mixamorig:Head'),
+    neck:  model.getObjectByName('mixamorigNeck')   || model.getObjectByName('mixamorig:Neck'),
+    spine: model.getObjectByName('mixamorigSpine2') || model.getObjectByName('mixamorig:Spine2')
+  };
+
+  if (!reduced){
+    const idle = gltf.animations.find(a => /idle/i.test(a.name)) || gltf.animations[0];
+    if (idle){
+      mixer = new THREE.AnimationMixer(model);
+      mixer.clipAction(idle).play();
+    }
+  }
+  modeloListo = true;
+  msg.classList.add('gone');
+}, (ev) => {
+  if (ev.total) msg.textContent = T[LANG].waking + ' \u00b7 ' + Math.round(100*ev.loaded/ev.total) + '%';
+}, (err) => {
+  console.error('[tucu]', err);
+  modeloListo = true;
+  msg.textContent = T[LANG].overslept;
+});
+
+/* ---------- objetivo de la mirada ---------- */
+/* yaw/pitch deseados en [-1,1]; se convierten a radianes acotados */
+let tX = 0, tY = 0;     /* objetivo   */
+let gX = 0, gY = 0;     /* suavizado  */
+const MAX_YAW = 0.55, MAX_PITCH = 0.32;   /* radianes: nunca se quiebra el cuello */
+
+if (finePointer){
+  addEventListener('mousemove', (e) => {
+    const r = cv.getBoundingClientRect();
+    const cxs = r.left + r.width/2, cys = r.top + r.height*0.35;  /* ~altura de la cabeza en pantalla */
+    tX = Math.max(-1, Math.min(1, (e.clientX - cxs) / (innerWidth  * 0.45)));
+    tY = Math.max(-1, Math.min(1, (e.clientY - cys) / (innerHeight * 0.45)));
+  });
+} else {
+  /* móvil: mirada autónoma que deriva, y atiende al toque */
+  let nextShift = 0;
+  setInterval(() => {
+    if (performance.now() > nextShift){
+      tX = (Math.random()*2-1) * 0.7;
+      tY = (Math.random()*2-1) * 0.35;
+      nextShift = performance.now() + 1800 + Math.random()*2600;
+    }
+  }, 400);
+  addEventListener('touchstart', (e) => {
+    const t = e.touches[0]; if (!t) return;
+    const r = cv.getBoundingClientRect();
+    tX = Math.max(-1, Math.min(1, (t.clientX - (r.left + r.width/2)) / (innerWidth  * 0.45)));
+    tY = Math.max(-1, Math.min(1, (t.clientY - (r.top  + r.height*0.35)) / (innerHeight * 0.45)));
+  }, { passive:true });
+}
+
+/* ---------- loop ---------- */
+const clock = new THREE.Clock();
+const _e = new THREE.Euler();
+const _q = new THREE.Quaternion();
+
+function mirar(bone, w){
+  if (!bone) return;
+  _e.set(MIRA_Y * gY * MAX_PITCH * w, MIRA_X * gX * MAX_YAW * w, 0);
+  _q.setFromEuler(_e);
+  bone.quaternion.multiply(_q);
+}
+
+(function loop(){
+  requestAnimationFrame(loop);
+  const dt = clock.getDelta();
+  if (mixer) mixer.update(dt);          /* 1. el Idle pone la pose base   */
+  if (bones && !reduced){
+    gX += (tX - gX) * 0.08;
+    gY += (tY - gY) * 0.08;
+    mirar(bones.spine, 0.15);           /* 2. la mirada se aplica ENCIMA  */
+    mirar(bones.neck,  0.30);
+    mirar(bones.head,  0.55);
+  }
+  renderer.render(scene, camera);
+})();
+</script>
+</body>
+</html>
