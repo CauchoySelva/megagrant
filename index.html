@@ -413,6 +413,7 @@ aplicarIdioma(LANG);
    ================================================================ */
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const cv  = document.getElementById('tucuCv');
@@ -447,7 +448,13 @@ size();
 new ResizeObserver(() => { size(); if (encuadrar) encuadrar(); }).observe(cv.parentElement);
 
 /* ---------- carga ---------- */
+/* los GLB del repo llevan geometria Draco (extension REQUERIDA):
+   sin este decodificador la carga falla en seco — mismo registro
+   que hace el visor de la biblioteca */
 const loader = new GLTFLoader();
+const draco = new DRACOLoader();
+draco.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/');
+loader.setDRACOLoader(draco);
 let mixer = null, bones = null, encuadrar = null;
 
 loader.load(TUCU_URL, (gltf) => {
