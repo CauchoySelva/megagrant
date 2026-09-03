@@ -74,7 +74,7 @@
   /* ---------- 2 · viñetas ---------- */
   .velo{ position:fixed; inset:0; z-index:2; pointer-events:none; }
   .velo.abajo{
-    background:linear-gradient(to top, rgba(13,8,4,.96) 0%, rgba(13,8,4,.82) 18%, rgba(13,8,4,.35) 40%, transparent 62%);
+    background:linear-gradient(to top, rgba(13,8,4,.96) 0%, rgba(13,8,4,.84) 22%, rgba(13,8,4,.38) 44%, transparent 66%);
   }
   .velo.arriba{
     background:
@@ -137,7 +137,7 @@
     position:relative; z-index:10;
     min-height:100%;
     display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
-    padding:190px 26px calc(72px + env(safe-area-inset-bottom));
+    padding:190px 26px calc(118px + env(safe-area-inset-bottom));
     max-width:1020px; margin:0 auto;
   }
   nav.enlaces{
@@ -189,7 +189,7 @@
     header.marca{ top:18px; left:20px; max-width:62vw; }
     header.marca .lede{ font-size:15px; }
     header.marca .socios{ font-size:10px; letter-spacing:.16em; }
-    main{ padding:200px 18px calc(70px + env(safe-area-inset-bottom)); }
+    main{ padding:200px 18px calc(84px + env(safe-area-inset-bottom)); }
     nav.enlaces{ grid-template-columns:1fr; gap:10px; max-width:460px; }
     .camino{ padding:12px 15px; gap:4px; }
     .camino strong{ font-size:18px; }
@@ -277,8 +277,8 @@ const LOGOS = [
                 (mas = la cabeza sube en pantalla)
      desplX   = desplazamiento lateral, en craneos (+ = Tucu a la derecha) */
 const ENCUADRE = {
-  apaisado: { dist:9.0,  bajaOjo:0.6, bajaMira:2.2, desplX:0.0 },   /* desktop */
-  vertical: { dist:13.0, bajaOjo:1.2, bajaMira:3.0, desplX:0.0 }    /* movil   */
+  apaisado: { dist:9.0,  bajaOjo:0.3, bajaMira:0.3, desplX:0.0 },   /* desktop: cabeza al centro */
+  vertical: { dist:13.0, bajaOjo:0.6, bajaMira:1.2, desplX:0.0 }    /* movil */
 };
 
 /* textos por idioma — mismos códigos del archivo: es / en / ptbr */
