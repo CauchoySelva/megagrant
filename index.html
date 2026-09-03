@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0D0804">
-<meta name="description" content="Wa'uro — a playable archive of objects from the Vaupés. Build, online archive and more.">
-<title>Wa'uro — Links</title>
+<meta name="description" content="Amazonian 3D Heritage Library — a playable archive of objects from the Vaupés (Wa'uro). Build, online archive and more.">
+<title>Amazonian 3D Heritage Library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -116,11 +116,11 @@
   /* ---------- identidad · esquina superior izquierda ---------- */
   header.marca{
     position:fixed; top:22px; left:28px; z-index:10;
-    max-width:min(46vw, 420px);
+    max-width:min(52vw, 520px);
   }
   header.marca h1{
     font-family:var(--display); font-weight:600;
-    font-size:clamp(38px, 4.6vw, 58px); line-height:1.0;
+    font-size:clamp(30px, 3.2vw, 46px); line-height:1.06;
     color:var(--cream);
   }
   header.marca .lede{
@@ -137,17 +137,17 @@
     position:relative; z-index:10;
     min-height:100%;
     display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
-    padding:190px 26px calc(118px + env(safe-area-inset-bottom));
-    max-width:1020px; margin:0 auto;
+    padding:190px 46px calc(118px + env(safe-area-inset-bottom));
+    max-width:1500px; margin:0 auto;
   }
   nav.enlaces{
     width:100%;
-    display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:clamp(20px, 5vw, 70px);
   }
   .camino{
     display:flex; flex-direction:column; gap:6px;
     text-align:left; text-decoration:none;
-    padding:15px 17px; border-radius:9px;
+    padding:18px 20px; border-radius:9px;
     border:1px solid rgba(193,122,74,.38);
     /* más sólido que en la biblioteca: va encima de Tucu */
     background:linear-gradient(160deg, rgba(40,25,17,.9), rgba(22,13,8,.9));
@@ -157,14 +157,14 @@
     transition:border-color .25s, transform .25s;
   }
   .cam-tag{
-    align-self:flex-start; font-size:9.5px; letter-spacing:.2em; text-transform:uppercase;
-    padding:3px 8px; border-radius:20px; border:1px solid;
+    align-self:flex-start; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+    padding:4px 10px; border-radius:20px; border:1px solid;
   }
   .camino strong{
-    font-family:var(--display); font-size:20px; font-weight:600;
-    color:var(--cream); line-height:1.08;
+    font-family:var(--display); font-size:24px; font-weight:600;
+    color:var(--cream); line-height:1.1;
   }
-  .camino span.desc{ font-size:14.5px; line-height:1.5; }
+  .camino span.desc{ font-size:16px; line-height:1.5; }
   .camino:hover{ transform:translateY(-3px); color:var(--cream); }
 
   .camino[data-tono="dorado"] .cam-tag{ color:var(--dorado-hi); border-color:rgba(212,168,67,.5); }
@@ -177,11 +177,11 @@
 
   /* ---------- logos · esquina inferior derecha ---------- */
   .logos{
-    position:fixed; right:22px; bottom:18px; z-index:62;
-    display:flex; align-items:center; gap:20px;
+    position:fixed; right:26px; bottom:20px; z-index:62;
+    display:flex; align-items:center; gap:26px;
   }
   .logos a{ display:block; }
-  .logos img{ height:24px; width:auto; display:block; opacity:.75; transition:opacity .25s; }
+  .logos img{ height:36px; width:auto; display:block; opacity:.75; transition:opacity .25s; }
   .logos a:hover img{ opacity:1; }
 
   /* ---------- móvil ---------- */
@@ -190,12 +190,12 @@
     header.marca .lede{ font-size:15px; }
     header.marca .socios{ font-size:10px; letter-spacing:.16em; }
     main{ padding:200px 18px calc(84px + env(safe-area-inset-bottom)); }
-    nav.enlaces{ grid-template-columns:1fr; gap:10px; max-width:460px; }
+    nav.enlaces{ grid-template-columns:1fr; gap:12px; max-width:460px; }
     .camino{ padding:12px 15px; gap:4px; }
-    .camino strong{ font-size:18px; }
-    .camino span.desc{ font-size:13.5px; }
-    .logos{ right:16px; bottom:14px; gap:16px; }
-    .logos img{ height:20px; }
+    .camino strong{ font-size:20px; }
+    .camino span.desc{ font-size:14.5px; }
+    .logos{ right:16px; bottom:14px; gap:20px; }
+    .logos img{ height:26px; }
   }
 </style>
 </head>
@@ -219,7 +219,7 @@
 </div>
 
 <header class="marca">
-  <h1>Wa&#8217;uro</h1>
+  <h1>Amazonian 3D<br>Heritage Library</h1>
   <p class="lede" id="lede"></p>
   <p class="socios">Universidad de los Andes &times; Estudio La Selva<br>Bogot&aacute;</p>
 </header>
@@ -245,7 +245,7 @@
    ================================================================ */
 const URLS = [
   'https://drive.google.com/drive/folders/1np-Br8HBmtb6mBtkAEpwHsXv6H9UVq6b?usp=drive_link',
-  'https://biblioteca-vert-mu.vercel.app',
+  'https://www.estudiolaselva.com/archivo',
   ''   /* EDITAR cuando exista: Drive, YouTube, etc. Vacío = "pronto" */
 ];
 
