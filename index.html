@@ -151,10 +151,7 @@
   .logos a{ display:block; }
   .logos img{
     height:24px; width:auto; display:block;
-    opacity:.6; transition:opacity .25s;
-    /* fuentes mixtas (SVG a color, PNG) unificadas en un solo tono claro
-       sobre el fondo oscuro; quitar esta linea para verlos a color */
-    filter:brightness(0) invert(.88) sepia(.14);
+    opacity:.75; transition:opacity .25s;
   }
   .logos a:hover img{ opacity:.95; }
   @media (max-width:720px){
@@ -237,20 +234,26 @@ const MIRA_Y = 1;   /* vertical   (asentir)          */
    simplemente no se muestra. El de Epic MegaGrants se agrega SOLO al
    recibir el grant (badge de uso restringido): descomentar esa linea. */
 const LOGOS = [
+  /* filtro de modo oscuro solo para Los Andes: invierte la luz (negro→
+     blanco) conservando el matiz de los colores. La Selva va a color. */
   { src:'https://upload.wikimedia.org/wikipedia/commons/4/47/University_of_Los_Andes_logo.svg',
-    alt:'Universidad de los Andes', href:'https://www.uniandes.edu.co/es/la-universidad' },
+    alt:'Universidad de los Andes', href:'https://www.uniandes.edu.co/es/la-universidad',
+    filtro:'invert(1) hue-rotate(180deg)' },
   { src:'https://images.squarespace-cdn.com/content/67a29672e45a656b8be53344/e752eb5c-38f0-486d-b74b-7c8f05d643c3/Icon.png?content-type=image%2Fpng',
     alt:'Estudio La Selva', href:'https://www.estudiolaselva.com/' }
   /* Epic MegaGrants: agregar SOLO al recibir el grant (badge restringido)
   ,{ src:'…/media/logo_megagrants.png', alt:'Epic MegaGrants Recipient', href:'' } */
 ];
 
-/* encuadre de Tucu segun el ancho (mismo corte de 720px que las tarjetas):
-   fracciones de la altura del modelo — ojo (altura de camara), mira
-   (punto que centra), dist (distancia de camara) */
+/* encuadre de Tucu, anclado al hueso de la CABEZA (mismo corte de 720px
+   que las tarjetas). Unidad: alto del craneo (Head → HeadTop_End), asi
+   el encuadre no depende de la escala del modelo.
+     dist     = distancia de camara, en craneos
+     bajaOjo  = cuanto baja la camara respecto a la cabeza, en craneos
+     bajaMira = cuanto baja el punto que centra la vista, en craneos */
 const ENCUADRE = {
-  busto:   { ojo:0.93, mira:0.91, dist:0.45 },   /* desktop: de hombros hacia arriba */
-  retrato: { ojo:0.82, mira:0.66, dist:1.15 }    /* movil apilado: cintura hacia arriba */
+  busto:   { dist:6.0,  bajaOjo:0.2, bajaMira:0.6 },   /* desktop: hombros hacia arriba */
+  retrato: { dist:13.0, bajaOjo:1.0, bajaMira:2.8 }    /* movil apilado: medio cuerpo */
 };
 
 /* textos por idioma — mismos códigos del archivo: es / en / ptbr */
@@ -342,6 +345,7 @@ aplicarIdioma(LANG);
     if (!l.src) continue;
     const img = document.createElement('img');
     img.src = l.src; img.alt = l.alt; img.loading = 'lazy';
+    if (l.filtro) img.style.filter = l.filtro;
     const nodo = l.href ? document.createElement('a') : img;
     if (l.href){ nodo.href = l.href; nodo.target = '_blank'; nodo.rel = 'noopener'; nodo.appendChild(img); }
     /* si el archivo no existe (aun), el logo desaparece sin dejar rastro */
@@ -461,25 +465,31 @@ loader.load(TUCU_URL, (gltf) => {
   const model = gltf.scene;
   scene.add(model);
 
-  /* encuadre calculado del bounding box real del modelo, con dos
-     composiciones segun el ancho (ver ENCUADRE en la configuracion) */
-  const box = new THREE.Box3().setFromObject(model);
-  const h = box.max.y - box.min.y;
-  const cx = (box.min.x + box.max.x) / 2;
-  const cz = (box.min.z + box.max.z) / 2;
-  encuadrar = () => {
-    const e = (innerWidth > 720) ? ENCUADRE.busto : ENCUADRE.retrato;
-    camera.position.set(cx, box.min.y + h * e.ojo, cz + h * e.dist);
-    camera.lookAt(cx, box.min.y + h * e.mira, cz);
-  };
-  encuadrar();
+  /* huesos verificados en SK_Tucu.glb (GLTFLoader puede sanear los
+     nombres quitando el ':' — se buscan ambas formas) */
+  const busca = (n) => model.getObjectByName('mixamorig' + n) ||
+                       model.getObjectByName('mixamorig:' + n);
+  bones = { head: busca('Head'), neck: busca('Neck'), spine: busca('Spine2') };
+  const headTop = busca('HeadTop_End');
 
-  /* huesos verificados en SK_Tucu.glb */
-  bones = {
-    head:  model.getObjectByName('mixamorigHead')   || model.getObjectByName('mixamorig:Head'),
-    neck:  model.getObjectByName('mixamorigNeck')   || model.getObjectByName('mixamorig:Neck'),
-    spine: model.getObjectByName('mixamorigSpine2') || model.getObjectByName('mixamorig:Spine2')
-  };
+  /* encuadre anclado a la CABEZA — no al bounding box: en mallas
+     skinned el box mide la geometria en espacio de bind, sin la
+     escala del esqueleto Mixamo, y la camara acaba mirando un pie
+     (visto en produccion). El hueso no miente. */
+  model.updateWorldMatrix(true, true);
+  const pHead = new THREE.Vector3(), pTop = new THREE.Vector3();
+  if (bones.head){
+    bones.head.getWorldPosition(pHead);
+    (headTop || bones.head).getWorldPosition(pTop);
+    /* unidad: alto del craneo; si no hay HeadTop_End, 25 cm de respaldo */
+    const u = headTop ? Math.max(pTop.distanceTo(pHead), 0.02) : 0.25;
+    encuadrar = () => {
+      const e = (innerWidth > 720) ? ENCUADRE.busto : ENCUADRE.retrato;
+      camera.position.set(pHead.x, pHead.y - u * e.bajaOjo, pHead.z + u * e.dist);
+      camera.lookAt(pHead.x, pHead.y - u * e.bajaMira, pHead.z);
+    };
+    encuadrar();
+  }
 
   if (!reduced){
     const idle = gltf.animations.find(a => /idle/i.test(a.name)) || gltf.animations[0];
