@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0D0804">
-<meta name="description" content="Wa'uro — an archive of objects from the Vaupés. Build, online archive and more.">
+<meta name="description" content="Wa'uro — a playable archive of objects from the Vaupés. Build, online archive and more.">
 <title>Wa'uro — Links</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,6 +49,39 @@
   ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; border:2px solid var(--bg); }
   ::-webkit-scrollbar-thumb:hover{ background:var(--oliva); }
 
+  /* ============================================================
+     CAPAS (de atrás hacia adelante)
+       1  Tucu a pantalla completa
+       2  viñetas que lo funden con la sombra donde va el texto
+      19+ atmósfera del archivo (niebla, brasas, petroglifos, grano)
+      10  contenido
+      62  conmutador y logos
+     ============================================================ */
+
+  /* ---------- 1 · Tucu ---------- */
+  #tucuCv{
+    position:fixed; inset:0; z-index:1;
+    width:100%; height:100%; display:block;
+    pointer-events:none;
+  }
+  .stage-msg{
+    position:fixed; left:0; right:0; top:58%; z-index:10; text-align:center;
+    font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--faint);
+    pointer-events:none; transition:opacity .6s ease;
+  }
+  .stage-msg.gone{ opacity:0; }
+
+  /* ---------- 2 · viñetas ---------- */
+  .velo{ position:fixed; inset:0; z-index:2; pointer-events:none; }
+  .velo.abajo{
+    background:linear-gradient(to top, rgba(13,8,4,.96) 0%, rgba(13,8,4,.82) 18%, rgba(13,8,4,.35) 40%, transparent 62%);
+  }
+  .velo.arriba{
+    background:
+      radial-gradient(ellipse 60% 55% at 12% 6%, rgba(13,8,4,.85), transparent 70%),
+      linear-gradient(to bottom, rgba(13,8,4,.55) 0%, transparent 22%);
+  }
+
   /* ---------- atmósfera (idéntica al archivo) ---------- */
   .fogv{ position:fixed; z-index:19; pointer-events:none; width:140vw; height:90vh; left:-20vw; opacity:.5; mix-blend-mode:screen; will-change:transform; }
   .fogv.a{ top:8vh;  background:radial-gradient(ellipse 46% 38% at 32% 50%, rgba(150,98,52,.10), transparent 70%); animation:fogA 75s ease-in-out infinite alternate; }
@@ -71,7 +104,7 @@
   /* ---------- conmutador de idioma (mismo del archivo) ---------- */
   .lang-toggle{
     display:flex; gap:2px; border:1px solid var(--line);
-    position:fixed; top:14px; right:16px; z-index:62;
+    position:fixed; top:16px; right:18px; z-index:62;
     background:rgba(13,8,4,.8);
   }
   .lang-toggle button{
@@ -80,37 +113,33 @@
   }
   .lang-toggle button[aria-pressed="true"]{ background:var(--line); color:var(--cream); }
 
-  /* ---------- columna central ---------- */
-  main{
-    position:relative; z-index:6;
-    min-height:100%;
-    display:flex; flex-direction:column; align-items:center;
-    padding:0 26px calc(28px + env(safe-area-inset-bottom));
-    max-width:960px; margin:0 auto;
+  /* ---------- identidad · esquina superior izquierda ---------- */
+  header.marca{
+    position:fixed; top:22px; left:28px; z-index:10;
+    max-width:min(46vw, 420px);
   }
-
-  .stage{
-    position:relative; width:100%; max-width:560px;
-    height:min(46vh, 440px);
-    margin-bottom:4px;
-  }
-  #tucuCv{ width:100%; height:100%; display:block; }
-  .stage-msg{
-    position:absolute; left:0; right:0; bottom:10px; text-align:center;
-    font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--faint);
-    pointer-events:none; transition:opacity .6s ease;
-  }
-  .stage-msg.gone{ opacity:0; }
-
-  header{ text-align:center; margin-bottom:30px; }
-  h1{
+  header.marca h1{
     font-family:var(--display); font-weight:600;
-    font-size:clamp(44px, 9vw, 64px); line-height:1.0;
+    font-size:clamp(38px, 4.6vw, 58px); line-height:1.0;
     color:var(--cream);
   }
-  .lede{ margin-top:10px; font-size:16px; line-height:1.6; color:var(--muted); }
+  header.marca .lede{
+    margin-top:8px; font-size:16.5px; line-height:1.5; color:var(--muted);
+  }
+  header.marca .socios{
+    margin-top:14px;
+    font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--faint);
+    line-height:1.7;
+  }
 
-  /* ---------- enlaces en fila: el arco que recorre la mirada ---------- */
+  /* ---------- caminos · borde inferior ---------- */
+  main{
+    position:relative; z-index:10;
+    min-height:100%;
+    display:flex; flex-direction:column; justify-content:flex-end; align-items:center;
+    padding:190px 26px calc(72px + env(safe-area-inset-bottom));
+    max-width:1020px; margin:0 auto;
+  }
   nav.enlaces{
     width:100%;
     display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
@@ -119,8 +148,11 @@
     display:flex; flex-direction:column; gap:6px;
     text-align:left; text-decoration:none;
     padding:15px 17px; border-radius:9px;
-    border:1px solid rgba(193,122,74,.3);
-    background:linear-gradient(160deg, rgba(46,29,20,.85), rgba(28,16,10,.8));
+    border:1px solid rgba(193,122,74,.38);
+    /* más sólido que en la biblioteca: va encima de Tucu */
+    background:linear-gradient(160deg, rgba(40,25,17,.9), rgba(22,13,8,.9));
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
     color:var(--muted);
     transition:border-color .25s, transform .25s;
   }
@@ -143,36 +175,36 @@
   .camino.pronto{ opacity:.55; pointer-events:none; }
   .camino.pronto .cam-tag{ color:var(--faint); border-color:var(--line); }
 
-  /* ---------- logos institucionales ---------- */
+  /* ---------- logos · esquina inferior derecha ---------- */
   .logos{
-    position:fixed; right:18px; bottom:14px; z-index:62;
+    position:fixed; right:22px; bottom:18px; z-index:62;
     display:flex; align-items:center; gap:20px;
   }
   .logos a{ display:block; }
-  .logos img{
-    height:24px; width:auto; display:block;
-    opacity:.75; transition:opacity .25s;
-  }
-  .logos a:hover img{ opacity:.95; }
-  @media (max-width:720px){
-    .logos{
-      position:static; justify-content:center;
-      margin-top:26px; gap:24px;
-    }
-  }
+  .logos img{ height:24px; width:auto; display:block; opacity:.75; transition:opacity .25s; }
+  .logos a:hover img{ opacity:1; }
 
-  footer{
-    margin-top:34px; text-align:center;
-    font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--faint);
-  }
-
+  /* ---------- móvil ---------- */
   @media (max-width:720px){
-    nav.enlaces{ grid-template-columns:1fr; max-width:440px; }
+    header.marca{ top:18px; left:20px; max-width:62vw; }
+    header.marca .lede{ font-size:15px; }
+    header.marca .socios{ font-size:10px; letter-spacing:.16em; }
+    main{ padding:200px 18px calc(70px + env(safe-area-inset-bottom)); }
+    nav.enlaces{ grid-template-columns:1fr; gap:10px; max-width:460px; }
+    .camino{ padding:12px 15px; gap:4px; }
+    .camino strong{ font-size:18px; }
+    .camino span.desc{ font-size:13.5px; }
+    .logos{ right:16px; bottom:14px; gap:16px; }
+    .logos img{ height:20px; }
   }
-  @media (max-height:640px){ .stage{ height:38vh; } header{ margin-bottom:20px; } }
 </style>
 </head>
 <body>
+
+<canvas id="tucuCv" aria-hidden="true"></canvas>
+<div class="velo abajo"></div>
+<div class="velo arriba"></div>
+<div class="stage-msg" id="stageMsg"></div>
 
 <div class="fogv a"></div>
 <div class="fogv b"></div>
@@ -186,23 +218,17 @@
   <button data-lang="ptbr" aria-pressed="false">PT</button>
 </div>
 
+<header class="marca">
+  <h1>Wa&#8217;uro</h1>
+  <p class="lede" id="lede"></p>
+  <p class="socios">Universidad de los Andes &times; Estudio La Selva<br>Bogot&aacute;</p>
+</header>
+
 <main>
-  <div class="stage">
-    <canvas id="tucuCv" aria-hidden="true"></canvas>
-    <div class="stage-msg" id="stageMsg"></div>
-  </div>
-
-  <header>
-    <h1>Wa&#8217;uro</h1>
-    <p class="lede" id="lede"></p>
-  </header>
-
   <nav class="enlaces" id="enlaces" aria-label="Links"></nav>
-
-  <footer>Universidad de los Andes &times; Estudio La Selva &middot; Bogot&aacute;</footer>
-
-  <div class="logos" id="logos" aria-label="Partners"></div>
 </main>
+
+<div class="logos" id="logos" aria-label="Partners"></div>
 
 <script type="importmap">
 {
@@ -229,10 +255,8 @@ const TUCU_URL = 'https://cauchoyselva.github.io/wauro-assets/models/SK_Tucu.glb
 const MIRA_X = 1;   /* horizontal (girar la cabeza)  */
 const MIRA_Y = 1;   /* vertical   (asentir)          */
 
-/* logos de la esquina — subir los archivos a media/ del repo wauro-assets
-   (versiones monocromas claras). Si el archivo no existe aun, el logo
-   simplemente no se muestra. El de Epic MegaGrants se agrega SOLO al
-   recibir el grant (badge de uso restringido): descomentar esa linea. */
+/* logos de la esquina. Epic MegaGrants se agrega SOLO al recibir el
+   grant (badge de uso restringido): descomentar esa entrada. */
 const LOGOS = [
   /* filtro de modo oscuro solo para Los Andes: invierte la luz (negro→
      blanco) conservando el matiz de los colores. La Selva va a color. */
@@ -241,19 +265,20 @@ const LOGOS = [
     filtro:'invert(1) hue-rotate(180deg)' },
   { src:'https://images.squarespace-cdn.com/content/67a29672e45a656b8be53344/e752eb5c-38f0-486d-b74b-7c8f05d643c3/Icon.png?content-type=image%2Fpng',
     alt:'Estudio La Selva', href:'https://www.estudiolaselva.com/' }
-  /* Epic MegaGrants: agregar SOLO al recibir el grant (badge restringido)
-  ,{ src:'…/media/logo_megagrants.png', alt:'Epic MegaGrants Recipient', href:'' } */
+  /* ,{ src:'…/media/logo_megagrants.png', alt:'Epic MegaGrants Recipient', href:'' } */
 ];
 
-/* encuadre de Tucu, anclado al hueso de la CABEZA (mismo corte de 720px
-   que las tarjetas). Unidad: alto del craneo (Head → HeadTop_End), asi
-   el encuadre no depende de la escala del modelo.
-     dist     = distancia de camara, en craneos
+/* encuadre de Tucu a pantalla completa, anclado al hueso de la CABEZA.
+   Unidad: alto del craneo (Head → HeadTop_End), independiente de la
+   escala del modelo. Se elige por proporcion de la ventana.
+     dist     = distancia de camara, en craneos (menos = mas grande)
      bajaOjo  = cuanto baja la camara respecto a la cabeza, en craneos
-     bajaMira = cuanto baja el punto que centra la vista, en craneos */
+     bajaMira = cuanto baja el punto que centra la vista, en craneos
+                (mas = la cabeza sube en pantalla)
+     desplX   = desplazamiento lateral, en craneos (+ = Tucu a la derecha) */
 const ENCUADRE = {
-  busto:   { dist:6.0,  bajaOjo:0.2, bajaMira:0.6 },   /* desktop: hombros hacia arriba */
-  retrato: { dist:13.0, bajaOjo:1.0, bajaMira:2.8 }    /* movil apilado: medio cuerpo */
+  apaisado: { dist:9.0,  bajaOjo:0.6, bajaMira:2.2, desplX:0.0 },   /* desktop */
+  vertical: { dist:13.0, bajaOjo:1.2, bajaMira:3.0, desplX:0.0 }    /* movil   */
 };
 
 /* textos por idioma — mismos códigos del archivo: es / en / ptbr */
@@ -411,8 +436,9 @@ aplicarIdioma(LANG);
 
 <script type="module">
 /* ================================================================
-   TUCU — anfitrión de la página. Reproduce su Idle y, ENCIMA de
-   cada cuadro del mixer, gira Head/Neck/Spine2 hacia el cursor.
+   TUCU — anfitrión a pantalla completa. Reproduce su Idle y, ENCIMA
+   de cada cuadro del mixer, gira Head/Neck/Spine2 hacia el cursor,
+   medido desde donde su cabeza cae en pantalla.
    Sin cursor fino (móvil): mirada autónoma + sigue el toque.
    ================================================================ */
 import * as THREE from 'three';
@@ -442,14 +468,15 @@ const rim = new THREE.PointLight(0xD4A843, 0.5, 12);
 rim.position.set(-2.5, 1.2, -2);
 scene.add(rim);
 
+let encuadrar = null;
 function size(){
-  const r = cv.parentElement.getBoundingClientRect();
-  renderer.setSize(r.width, r.height, false);
-  camera.aspect = r.width / r.height;
+  renderer.setSize(innerWidth, innerHeight, false);
+  camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
+  if (encuadrar) encuadrar();
 }
 size();
-new ResizeObserver(() => { size(); if (encuadrar) encuadrar(); }).observe(cv.parentElement);
+addEventListener('resize', size);
 
 /* ---------- carga ---------- */
 /* los GLB del repo llevan geometria Draco (extension REQUERIDA):
@@ -459,7 +486,10 @@ const loader = new GLTFLoader();
 const draco = new DRACOLoader();
 draco.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/');
 loader.setDRACOLoader(draco);
-let mixer = null, bones = null, encuadrar = null;
+let mixer = null, bones = null;
+
+/* donde cae la cabeza de Tucu en pantalla (px) — referencia de la mirada */
+const headScreen = { x: innerWidth/2, y: innerHeight*0.3 };
 
 loader.load(TUCU_URL, (gltf) => {
   const model = gltf.scene;
@@ -484,9 +514,15 @@ loader.load(TUCU_URL, (gltf) => {
     /* unidad: alto del craneo; si no hay HeadTop_End, 25 cm de respaldo */
     const u = headTop ? Math.max(pTop.distanceTo(pHead), 0.02) : 0.25;
     encuadrar = () => {
-      const e = (innerWidth > 720) ? ENCUADRE.busto : ENCUADRE.retrato;
-      camera.position.set(pHead.x, pHead.y - u * e.bajaOjo, pHead.z + u * e.dist);
-      camera.lookAt(pHead.x, pHead.y - u * e.bajaMira, pHead.z);
+      const e = (innerWidth / innerHeight >= 1) ? ENCUADRE.apaisado : ENCUADRE.vertical;
+      const x = pHead.x - u * e.desplX;
+      camera.position.set(x, pHead.y - u * e.bajaOjo, pHead.z + u * e.dist);
+      camera.lookAt(x, pHead.y - u * e.bajaMira, pHead.z);
+      /* proyectar la cabeza a pantalla para que la mirada parta de ahi */
+      camera.updateMatrixWorld();
+      const v = pHead.clone().project(camera);
+      headScreen.x = (v.x + 1) / 2 * innerWidth;
+      headScreen.y = (1 - v.y) / 2 * innerHeight;
     };
     encuadrar();
   }
@@ -509,18 +545,19 @@ loader.load(TUCU_URL, (gltf) => {
 });
 
 /* ---------- objetivo de la mirada ---------- */
-/* yaw/pitch deseados en [-1,1]; se convierten a radianes acotados */
+/* yaw/pitch deseados en [-1,1] desde la cabeza en pantalla; se
+   convierten a radianes acotados */
 let tX = 0, tY = 0;     /* objetivo   */
 let gX = 0, gY = 0;     /* suavizado  */
 const MAX_YAW = 0.55, MAX_PITCH = 0.32;   /* radianes: nunca se quiebra el cuello */
 
+function apuntar(px, py){
+  tX = Math.max(-1, Math.min(1, (px - headScreen.x) / (innerWidth  * 0.5)));
+  tY = Math.max(-1, Math.min(1, (py - headScreen.y) / (innerHeight * 0.5)));
+}
+
 if (finePointer){
-  addEventListener('mousemove', (e) => {
-    const r = cv.getBoundingClientRect();
-    const cxs = r.left + r.width/2, cys = r.top + r.height*0.35;  /* ~altura de la cabeza en pantalla */
-    tX = Math.max(-1, Math.min(1, (e.clientX - cxs) / (innerWidth  * 0.45)));
-    tY = Math.max(-1, Math.min(1, (e.clientY - cys) / (innerHeight * 0.45)));
-  });
+  addEventListener('mousemove', (e) => apuntar(e.clientX, e.clientY));
 } else {
   /* móvil: mirada autónoma que deriva, y atiende al toque */
   let nextShift = 0;
@@ -532,10 +569,7 @@ if (finePointer){
     }
   }, 400);
   addEventListener('touchstart', (e) => {
-    const t = e.touches[0]; if (!t) return;
-    const r = cv.getBoundingClientRect();
-    tX = Math.max(-1, Math.min(1, (t.clientX - (r.left + r.width/2)) / (innerWidth  * 0.45)));
-    tY = Math.max(-1, Math.min(1, (t.clientY - (r.top  + r.height*0.35)) / (innerHeight * 0.45)));
+    const t = e.touches[0]; if (t) apuntar(t.clientX, t.clientY);
   }, { passive:true });
 }
 
